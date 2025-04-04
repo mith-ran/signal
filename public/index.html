@@ -55,5 +55,26 @@
   </div>
 
   <script type="module" src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const newChat = localStorage.getItem('newChat');
+      if (newChat) {
+        const chatList = document.querySelector('.chat-list');
+        const newChatItem = document.createElement('li');
+        newChatItem.className = 'chat-item';
+        newChatItem.setAttribute('onclick', `openChat('${newChat}')`);
+        newChatItem.innerHTML = `
+          <img src="https://i.pravatar.cc/40?u=${newChat}" alt="avatar" />
+          <div class="chat-info">
+            <div class="chat-name">${newChat}</div>
+            <div class="chat-preview">Start a conversation...</div>
+          </div>
+          <span class="time">Just now</span>
+        `;
+        chatList.appendChild(newChatItem);
+        localStorage.removeItem('newChat');
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="text" id="chatName" placeholder="Enter chat name" required />
+      <button type="submit">Create Chat</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const chatName = document.getElementById('chatName').value.trim();
+      if (chatName) {
+        localStorage.setItem('newChat', chatName);
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>
