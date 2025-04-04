@@ -1,5 +1,8 @@
+import { io } from 'https://cdn.socket.io/4.8.1/socket.io.esm.min.js';
+
 let currentContact = null;
 const chatHistory = {}; // Stores messages per contact
+const socket = io(); // Connect to the backend server
 
 console.log('Chat application initialized.');
 
@@ -30,9 +33,8 @@ export function sendMessage() {
 
   if (!message || !currentContact) return;
 
+  // Add user message to the UI
   const messagesDiv = document.getElementById('messages');
-
-  // Add user message
   const msgElem = document.createElement('div');
   msgElem.className = 'message sent';
   msgElem.innerHTML = `<span class="bubble">${message}</span>`;
@@ -45,21 +47,25 @@ export function sendMessage() {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
   input.value = '';
 
-  // Simulate a response
-  setTimeout(() => {
-    const replyText = `${currentContact}: Got your message!`;
-
-    const reply = document.createElement('div');
-    reply.className = 'message received';
-    reply.innerHTML = `<span class="bubble">${replyText}</span>`;
-    messagesDiv.appendChild(reply);
-
-    // Save reply to chatHistory
-    chatHistory[currentContact].push({ text: replyText, sender: 'received' });
-
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }, 1000);
+  // Send the message to the server
+  socket.emit('sendMessage', { chatName: currentContact, message });
 }
 
-window.openChat = openChat;
-window.sendMessage = sendMessage;
+// Listen for incoming messages
+socket.on('receiveMessage', ({ chatName, message, sender }) => {
+  if (chatName === currentContact) {
+    const messagesDiv = document.getElementById('messages');
+
+    // Add the received message to the UI
+    const msgElem = document.createElement('div');
+    msgElem.className = 'message received';
+    msgElem.innerHTML = `<span class="bubble">${message}</span>`;
+    messagesDiv.appendChild(msgElem);
+
+    // Save the message to chatHistory
+    chatHistory[chatName] = chatHistory[chatName] || [];
+    chatHistory[chatName].push({ text: message, sender: 'received' });
+
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+});
