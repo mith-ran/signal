@@ -1,4 +1,4 @@
-import { io } from 'https://cdn.socket.io/4.8.1/socket.io.esm.min.js';
+import { io } from 'https://cdn.socket.io/4.5.4/socket.io.esm.min.js';
 
 let currentContact = null;
 const chatHistory = {}; // Stores messages per contact
