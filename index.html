@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signal-like Chat</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <header class="sidebar-header">
+        <h2>Chats</h2>
+        <input type="text" placeholder="Search" class="search-box" />
+      </header>
+
+      <ul class="chat-list">
+        <li class="chat-item active" onclick="openChat('Roommates')">
+          <img src="https://i.pravatar.cc/40?u=1" alt="avatar" />
+          <div class="chat-info">
+            <div class="chat-name">Roommates</div>
+            <div class="chat-preview">How’s 7pm? I can drive</div>
+          </div>
+          <span class="time">2m</span>
+        </li>
+        <li class="chat-item" onclick="openChat('Family')">
+          <img src="https://i.pravatar.cc/40?u=2" alt="avatar" />
+          <div class="chat-info">
+            <div class="chat-name">Family</div>
+            <div class="chat-preview">Katie: That works for us...</div>
+          </div>
+          <span class="badge">4</span>
+        </li>
+        <!-- Add more chats -->
+      </ul>
+    </aside>
+
+    <!-- Chat window -->
+    <section class="chat-window">
+      <header class="chat-header">
+        <div class="chat-contact">
+          <img src="https://i.pravatar.cc/40?u=1" alt="avatar" />
+          <div class="chat-title" id="chatWith">Select a contact</div>
+        </div>
+      </header>
+
+      <div class="messages" id="messages"></div>
+
+      <div class="input-area">
+        <input type="text" placeholder="Type a message..." id="msgInput" />
+        <button onclick="sendMessage()">➤</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const newChat = localStorage.getItem('newChat');
+      if (newChat) {
+        const chatList = document.querySelector('.chat-list');
+        const newChatItem = document.createElement('li');
+        newChatItem.className = 'chat-item';
+        newChatItem.setAttribute('onclick', `openChat('${newChat}')`);
+        newChatItem.innerHTML = `
+        <img src="https://i.pravatar.cc/40?u=${newChat}" alt="avatar" />
+        <div class="chat-info">
+          <div class="chat-name">${newChat}</div>
+          <div class="chat-preview">Start a conversation...</div>
+          </div>
+          <span class="time">Just now</span>
+          `;
+          chatList.appendChild(newChatItem);
+          localStorage.removeItem('newChat');
+        }
+      });
+      </script>
+      <script type="module" src="main.js"></script>
+</body>
+</html>
